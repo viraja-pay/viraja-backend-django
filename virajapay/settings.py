@@ -26,7 +26,7 @@ if READ_DOT_ENV_FILE:
     env.read_env(env_file)
     print('The .env file has been loaded. See base.py for more information')
 
-DEBUG = env.bool('DJANGO_DEBUG', default=False) # False if not in os.environ
+DEBUG = env.bool('DJANGO_DEBUG', default=True) # False if not in os.environ
 TEMPLATE_DEBUG = DEBUG
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
