@@ -184,6 +184,20 @@ DATABASES = {
     'default': {} # 'ENGINE': 'django.contrib.gis.db.backends.postgis',
 }
 
+DATABASES['default'] = env.db(
+    'DATABASE_URL',
+    default='sqlite:///db.sqlite3'
+)
+
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)
+
+
+EMAIL_CONFIG = env.email_url(
+    'EMAIL_URL',
+    default='smtp://user@:password@smtp.zoho.com:587'
+)
+vars().update(EMAIL_CONFIG)
+DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL', default="info@virajapay.org")
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -240,22 +254,6 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQURIED=True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
-
-
-DATABASES['default'] = env.db(
-    'DATABASE_URL',
-    default='sqlite:///db.sqlite3'
-)
-
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)
-
-
-EMAIL_CONFIG = env.email_url(
-    'EMAIL_URL',
-    default='smtp://user@:password@smtp.zoho.com:587'
-)
-vars().update(EMAIL_CONFIG)
-DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL', default="info@virajapay.org")
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

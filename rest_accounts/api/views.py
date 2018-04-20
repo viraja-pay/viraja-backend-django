@@ -32,6 +32,7 @@ class UserCreateAPIView(views.APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
@@ -39,6 +40,8 @@ class UserCreateAPIView(views.APIView):
 
 class TokenAPIView(views.APIView):
     serializer_class = UserSerializer
+
+    permission_classes = ()
 
     parser_classes = (
         parsers.FormParser,
@@ -52,11 +55,11 @@ class TokenAPIView(views.APIView):
         serializer = self.serializer_class(data=request.data)
         if request.data.get("username") and request.data.get("password"):
             user = get_object_or_404(UserProfile, username=request.data.get("username"))
-            is_authenticated = authenticate(
+            is_authenticated_api = authenticate(
                 username=user.username,
                 password=request.data["password"]
             )
-            if is_authenticated:
+            if is_authenticated_api:
                 if not user.is_active:
                     msg = 'User account is disabled.'
                     raise exceptions.ValidationError(msg)

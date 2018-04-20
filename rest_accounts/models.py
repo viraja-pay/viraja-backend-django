@@ -19,3 +19,29 @@ class UserProfile(AbstractUser):
         blank=True,
         validators=[phone_regex]
     )
+    # address
+    # city
+    # state
+    # country
+
+"""
+class PaymentUsers(models.Model):
+
+
+
+class MpesaPayments(models.Model):
+    amount
+    initiator
+    recipient
+    cause
+    type
+
+
+class VisaPayments(models.Model):
+    amount
+    initiator
+    recipient
+    cause
+    type
+
+"""
