@@ -16,7 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include('rest_accounts.urls')),
+]
+
+# Create our schema's view w/ the get_schema_view() helper method. Pass in the proper Renderers for swagger
+schema_view = get_schema_view(title='Virajapay API', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
+
+# Inlcude the schema view in our urls.
+urlpatterns += [
+    path('api/docs/', schema_view, name="docs"),
 ]
