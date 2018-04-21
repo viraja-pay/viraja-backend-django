@@ -14,16 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from rest_framework.schemas import get_schema_view
 from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+from rest_accounts.api.views import HomeAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('rest_accounts.urls')),
+    path('', HomeAPIView.as_view(), name="welcome"),
 ]
 
 # Create our schema's view w/ the get_schema_view() helper method. Pass in the proper Renderers for swagger
@@ -33,3 +35,5 @@ schema_view = get_schema_view(title='Virajapay API', renderer_classes=[OpenAPIRe
 urlpatterns += [
     path('api/docs/', schema_view, name="docs"),
 ]
+
+urlpatterns += [re_path(r'^api/(?P<version>(v1))/', include('drf_openapi.urls'))]
